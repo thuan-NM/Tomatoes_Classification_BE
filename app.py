@@ -5,18 +5,23 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import img_to_array
 import numpy as np
 from PIL import Image
+import time
 
-model_path = 'optimized_residual_model.h5'  # Use relative path if the file is in the same folder
+model_path = 'optimized_residual_model.h5'
 model = load_model(model_path)
 
-# Class labels (update based on your dataset's classes)
 class_labels = ['fully_ripened', 'green', 'half_ripened']
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app)
+
+@app.route('/')
+def home():
+    return "Welcome to the Tomato Classification API!"
 
 @app.route('/predict', methods=['POST'])
 def predict():
+    start_time = time.time()
     if 'file' not in request.files:
         return jsonify({'error': 'No file part in the request'}), 400
     
@@ -34,6 +39,9 @@ def predict():
             
             predictions = model.predict(img_array)
             predicted_class = class_labels[np.argmax(predictions)]
+            
+            end_time = time.time()
+            print(f"Prediction took {end_time - start_time} seconds")
             
             return jsonify({
                 'prediction': predicted_class,
