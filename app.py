@@ -13,7 +13,7 @@ model = load_model(model_path)
 class_labels = ['fully_ripened', 'green', 'half_ripened']
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/predict": {"origins": "*"}})
 
 @app.route('/')
 def home():
