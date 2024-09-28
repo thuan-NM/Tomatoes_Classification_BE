@@ -8,12 +8,21 @@ from PIL import Image
 import time
 
 model_path = 'optimized_residual_model.h5'
-model = load_model(model_path)
+model = None
+
+def load_model_once():
+    global model
+    if model is None:
+        model = load_model(model_path)
 
 class_labels = ['fully_ripened', 'green', 'half_ripened']
 
 app = Flask(__name__)
 CORS(app, resources={r"/predict": {"origins": "*"}})
+
+@app.before_first_request
+def preload_model():
+    load_model_once()
 
 @app.route('/')
 def home():
