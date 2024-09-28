@@ -6,7 +6,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 import numpy as np
 from PIL import Image
 
-model_path = r'C:\Users\nguye\OneDrive\Desktop\Deep Learning\project\Tomatoes_Classification_BE\optimized_residual_model.h5'  # Use relative path if the file is in the same folder
+model_path = 'optimized_residual_model.h5'  # Use relative path if the file is in the same folder
 model = load_model(model_path)
 
 # Class labels (update based on your dataset's classes)
